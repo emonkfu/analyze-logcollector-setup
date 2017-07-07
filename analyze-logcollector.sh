@@ -48,7 +48,7 @@ if [ -n "${FILE_LC}" ] ; then
   cat << EOF > "${PROG}"
 cd /tmp
 ovirt-log-collector/src/inventory_report/ovirt-log-collector-analyzer.sh --keep-working-dir "${FILE_LC}"
-  EOF
+EOF
   chmod +x "${PROG}"
   su - postgres -c "${PROG}"
 else
