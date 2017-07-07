@@ -42,12 +42,16 @@ echo "#### chose latest sosreport-LogCollector*.tar.xz file in /tmp"
 FILE_LC="$(ls -t /tmp/sosreport-LogCollector*.tar.xz | head -n1)"
 chown postgres: "${FILE_LC}"
 
-echo "#### process log-collector report"
-PROG="/tmp/postgres.process.lc.sh"
-cat << EOF > "${PROG}"
+if [ -n "${FILE_LC}" ] ; then
+  echo "#### process most current log-collector report uploaded"
+  PROG="/tmp/postgres.process.lc.sh"
+  cat << EOF > "${PROG}"
 cd /tmp
 ovirt-log-collector/src/inventory_report/ovirt-log-collector-analyzer.sh --keep-working-dir "${FILE_LC}"
-EOF
-chmod +x "${PROG}"
-su - postgres -c "${PROG}"
+  EOF
+  chmod +x "${PROG}"
+  su - postgres -c "${PROG}"
+else
+  echo "#### no log-collector files found in /tmp"
+fi
 
